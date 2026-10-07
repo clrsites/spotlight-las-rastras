@@ -3,8 +3,8 @@ const cacheVersion = Date.now();
 const pdfUrl = `${PDF_PATH}?v=${cacheVersion}`;
 
 const VIDEO_PAGES = new Map([
-  [67, { src: "./video1.mp4", title: "Video 1" }],
-  [68, { src: "./video2.mp4", title: "Video 2" }],
+  [30, { src: "./video1.mp4", title: "Video 1" }],
+  [31, { src: "./video2.mp4", title: "Video 2" }],
 ]);
 
 const elements = {
