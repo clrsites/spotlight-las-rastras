@@ -2,6 +2,11 @@ const PDF_PATH = "./newsletter.pdf";
 const cacheVersion = Date.now();
 const pdfUrl = `${PDF_PATH}?v=${cacheVersion}`;
 
+const VIDEO_PAGES = new Map([
+  [67, { src: "./video1.mp4", title: "Video 1" }],
+  [68, { src: "./video2.mp4", title: "Video 2" }],
+]);
+
 const elements = {
   book: document.querySelector("#book"),
   stage: document.querySelector("#readerStage"),
@@ -19,6 +24,46 @@ elements.download.href = pdfUrl;
 let pageFlip = null;
 let totalPages = 0;
 let buildRun = 0;
+
+function createVideoPlayer(pageNumber) {
+  const videoConfig = VIDEO_PAGES.get(pageNumber);
+  if (!videoConfig) return null;
+
+  const player = document.createElement("div");
+  const placeholder = document.createElement("p");
+  const video = document.createElement("video");
+  const source = document.createElement("source");
+
+  player.className = "page-video-player video-missing";
+  player.setAttribute("aria-label", `${videoConfig.title}, página ${pageNumber}`);
+
+  placeholder.className = "video-placeholder";
+  placeholder.textContent = `Agrega ${videoConfig.src.replace("./", "")} en esta carpeta`;
+
+  video.className = "page-video";
+  video.controls = true;
+  video.preload = "metadata";
+  video.playsInline = true;
+  video.setAttribute("aria-label", videoConfig.title);
+
+  source.src = `${videoConfig.src}?v=${cacheVersion}`;
+  source.type = "video/mp4";
+  video.append(source);
+  player.append(placeholder, video);
+
+  video.addEventListener("loadedmetadata", () => player.classList.remove("video-missing"));
+  video.addEventListener("error", () => player.classList.add("video-missing"));
+
+  ["pointerdown", "mousedown", "touchstart", "click"].forEach((eventName) => {
+    player.addEventListener(eventName, (event) => event.stopPropagation());
+  });
+
+  return player;
+}
+
+function pauseVideos() {
+  document.querySelectorAll(".page-video").forEach((video) => video.pause());
+}
 
 function updateControls(pageIndex = 0) {
   const visiblePage = Math.min(pageIndex + 1, totalPages);
@@ -81,6 +126,8 @@ async function buildFlipbook() {
       pageElement.dataset.density = "soft";
       pageElement.setAttribute("aria-label", `Página ${number}`);
       pageElement.append(canvas);
+      const videoPlayer = createVideoPlayer(number);
+      if (videoPlayer) pageElement.append(videoPlayer);
       elements.book.append(pageElement);
       pageRecords.push({ number, canvas });
     }
@@ -129,7 +176,10 @@ async function buildFlipbook() {
 
     await new Promise((resolve) => requestAnimationFrame(resolve));
     pageFlip.loadFromHTML(elements.book.querySelectorAll(".page"));
-    pageFlip.on("flip", (event) => updateControls(event.data));
+    pageFlip.on("flip", (event) => {
+      pauseVideos();
+      updateControls(event.data);
+    });
     pageFlip.on("changeOrientation", () => updateControls(pageFlip.getCurrentPageIndex()));
     elements.loading.hidden = true;
     elements.previous.disabled = false;
@@ -163,6 +213,7 @@ elements.next.addEventListener("click", () => pageFlip?.flipNext());
 elements.retry.addEventListener("click", buildFlipbook);
 
 document.addEventListener("keydown", (event) => {
+  if (event.target instanceof HTMLMediaElement) return;
   if (event.key === "ArrowLeft") pageFlip?.flipPrev();
   if (event.key === "ArrowRight") pageFlip?.flipNext();
 });

@@ -1,0 +1,14 @@
+ANTES DE PUBLICAR
+
+Coloca o reemplaza estos tres archivos en esta misma carpeta:
+
+1. newsletter.pdf
+2. video1.mp4
+3. video2.mp4
+
+No cambies esos nombres.
+
+El sitio mostrará video1.mp4 en la página 67 y video2.mp4 en la página 68,
+dentro de los cuadros preparados en el Spotlight.
+
+Después, sube todos los archivos de esta carpeta al repositorio de GitHub.
