@@ -6,17 +6,18 @@ El sitio muestra siempre `newsletter.pdf` en un lector institucional inspirado e
 2. Expórtalo en orientación horizontal y nómbralo `newsletter.pdf`.
 3. Reemplaza `newsletter.pdf` en la carpeta principal del repositorio.
 4. Copia los videos en la misma carpeta con los nombres `video1.mp4` y `video2.mp4`.
-5. Confirma y publica los cambios en el repositorio.
+5. Actualiza `EDITION_VERSION` en `app.js` con el año y mes de la nueva edición, por ejemplo `2026-10`.
+6. Confirma y publica los cambios en el repositorio.
 
-Los reproductores se muestran sobre los cuadros de video de las páginas 67 y 68. No es necesario incrustar los videos dentro del PDF.
+Los reproductores se muestran sobre los cuadros de video de las páginas 30 y 31. No es necesario incrustar los videos dentro del PDF.
 
-El enlace del sitio no cambia. La página añade automáticamente una versión temporal a la URL del PDF para evitar que los lectores vean una edición antigua guardada por el navegador.
+El enlace del sitio no cambia. `EDITION_VERSION` controla la versión del PDF y los videos para aprovechar la caché sin mostrar una edición antigua.
 
 ## Archivos principales
 
 - `newsletter.pdf`: edición mensual que se debe reemplazar.
-- `video1.mp4`: video reproducible de la página 67.
-- `video2.mp4`: video reproducible de la página 68.
+- `video1.mp4`: video reproducible de la página 30.
+- `video2.mp4`: video reproducible de la página 31.
 - `index.html`: estructura del sitio.
 - `styles.css`: diseño visual.
 - `app.js`: lector PDF y efecto flipbook.

@@ -8,7 +8,10 @@ Coloca o reemplaza estos tres archivos en esta misma carpeta:
 
 No cambies esos nombres.
 
-El sitio mostrará video1.mp4 en la página 67 y video2.mp4 en la página 68,
+Actualiza también EDITION_VERSION en app.js con el año y mes de la nueva
+edición, por ejemplo: 2026-10.
+
+El sitio mostrará video1.mp4 en la página 30 y video2.mp4 en la página 31,
 dentro de los cuadros preparados en el Spotlight.
 
 Después, sube todos los archivos de esta carpeta al repositorio de GitHub.
