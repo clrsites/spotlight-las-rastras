@@ -219,14 +219,17 @@ async function buildFlipbook() {
       "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.worker.min.mjs";
 
     const loadingTask = getDocument({ url: pdfUrl });
+    let downloadComplete = false;
     loadingTask.onProgress = ({ loaded, total }) => {
-      if (total > 0) {
+      if (!downloadComplete && total > 0) {
         const percent = Math.min(100, Math.round((loaded / total) * 100));
         elements.counter.textContent = `Descargando edición ${percent}%`;
       }
     };
 
     const pdf = await loadingTask.promise;
+    downloadComplete = true;
+    loadingTask.onProgress = null;
     if (run !== buildRun) return;
     totalPages = pdf.numPages;
     const firstPage = await pdf.getPage(1);
